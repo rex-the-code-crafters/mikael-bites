@@ -1,16 +1,15 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { use, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { allPosts, tocSections } from '@/lib/data'
 import NewsletterSection from '@/components/NewsletterSection'
 
-type Props = { params: { slug: string } }
+type Props = { params: Promise<{ slug: string }> }
 
 export default function BlogPost({ params }: Props) {
-  const post = allPosts.find((p) => p.slug === params.slug)
-  if (!post) notFound()
+  const { slug } = use(params)
 
   const [activeSection, setActiveSection] = useState('')
   const [copyLabel, setCopyLabel] = useState('Copy link')
@@ -51,7 +50,10 @@ export default function BlogPost({ params }: Props) {
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent('Claude 4 vs GPT-5: Which AI Actually Wins in 2026? — via @mikaelbites')}`, '_blank')
   }
 
-  const relatedPosts = allPosts.filter(p => p.slug !== (params.slug || 'claude-4-vs-gpt-5')).slice(0, 3)
+  const post = allPosts.find((p) => p.slug === slug)
+  if (!post) notFound()
+
+  const relatedPosts = allPosts.filter(p => p.slug !== slug).slice(0, 3)
 
   return (
     <>
