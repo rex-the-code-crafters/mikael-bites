@@ -4,6 +4,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
+import GSAPInit from '@/components/GSAPInit'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -23,6 +24,11 @@ export const metadata: Metadata = {
   description: 'Honest takes on AI tools — deep-dive reviews, weekly news, and the AI newsletter you\'ll actually read.',
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -32,6 +38,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${playfair.variable} ${dmSans.variable}`} suppressHydrationWarning>
         <ThemeProvider>
+          <GSAPInit />
           <Nav />
           {children}
           <Footer />
